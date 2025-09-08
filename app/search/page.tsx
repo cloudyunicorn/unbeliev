@@ -9,13 +9,11 @@ export const metadata = {
 };
 
 interface SearchPageProps {
-  searchParams: {
-    q?: string;
-  };
+  searchParams: Promise<{ q?: string }>;
 }
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
-  const query = searchParams.q || '';
+  const { q: query = '' } = await searchParams;
   const results = query ? await searchMyths(query) : [];
 
   return (

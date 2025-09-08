@@ -12,8 +12,9 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: { params: { category: string } }) {
+  const { category: categorySlug } = await params;
   const categories = await getCategories();
-  const category = categories.find(c => c.slug === params.category);
+  const category = categories.find(c => c.slug === categorySlug);
   
   if (!category) {
     return {
@@ -28,9 +29,10 @@ export async function generateMetadata({ params }: { params: { category: string 
 }
 
 export default async function CategoryPage({ params }: { params: { category: string } }) {
-  const myths = await getMythsByCategory(params.category);
+  const { category: categorySlug } = await params;
+  const myths = await getMythsByCategory(categorySlug);
   const categories = await getCategories();
-  const currentCategory = categories.find(c => c.slug === params.category);
+  const currentCategory = categories.find(c => c.slug === categorySlug);
 
   if (!currentCategory) {
     notFound();
@@ -54,7 +56,7 @@ export default async function CategoryPage({ params }: { params: { category: str
         <aside className="lg:w-80">
           <CategoryFilter 
             categories={categories} 
-            currentCategory={params.category} 
+            currentCategory={categorySlug} 
           />
         </aside>
         

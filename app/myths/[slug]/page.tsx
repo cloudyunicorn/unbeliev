@@ -26,7 +26,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const myth = await getMythBySlug(params.slug);
+  const { slug } = await params;
+  const myth = await getMythBySlug(slug);
   
   if (!myth) {
     return {
@@ -51,8 +52,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 }
 
 export default async function MythPage({ params }: { params: { slug: string } }) {
-  const myth = await getMythBySlug(params.slug);
-  const Content = await getMDXContent(params.slug);
+  const { slug } = await params;
+  const myth = await getMythBySlug(slug);
+  const Content = await getMDXContent(slug);
 
   if (!myth || !Content) {
     notFound();

@@ -1,103 +1,147 @@
-import Image from "next/image";
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { ArrowRight, BookOpen, Search, Shield, Zap } from 'lucide-react';
+import { getAllMyths } from '@/lib/mdx';
+import MythCard from '@/components/myth-card';
+import Newsletter from '@/components/newsletter';
 
-export default function Home() {
+export default async function HomePage() {
+  const allMyths = await getAllMyths();
+  const featuredMyths = allMyths.filter(myth => myth.featured).slice(0, 3);
+  const recentMyths = allMyths.slice(0, 6);
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="flex flex-col">
+      {/* Hero Section */}
+      <section className="container space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32">
+        <div className="mx-auto flex max-w-[64rem] flex-col items-center gap-4 text-center">
+          <Badge variant="outline" className="text-sm py-1">
+            Evidence-Based Myth Busting
+          </Badge>
+          <h1 className="font-bold text-3xl sm:text-5xl md:text-6xl lg:text-7xl">
+            Separating Fact from{" "}
+            <span className="text-primary">Fiction</span>
+          </h1>
+          <p className="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
+            Explore our comprehensive database of debunked myths and superstitions, 
+            backed by scientific evidence and expert research.
+          </p>
+          <div className="flex gap-4">
+            <Button size="lg" asChild>
+              <Link href="/myths">
+                <BookOpen className="mr-2 h-4 w-4" />
+                Explore Myths
+              </Link>
+            </Button>
+            <Button variant="outline" size="lg" asChild>
+              <Link href="/search">
+                <Search className="mr-2 h-4 w-4" />
+                Search Database
+              </Link>
+            </Button>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section>
+
+      {/* Features Section */}
+      <section className="container space-y-6 py-8 md:py-12 lg:py-24">
+        <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center">
+          <h2 className="font-bold text-3xl leading-[1.1] sm:text-3xl md:text-6xl">
+            Why Trust Our Research?
+          </h2>
+          <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
+            Our myth-busting approach is grounded in scientific methodology and peer-reviewed sources.
+          </p>
+        </div>
+        <div className="mx-auto grid justify-center gap-4 sm:grid-cols-2 md:max-w-[64rem] md:grid-cols-3">
+          <Card>
+            <CardHeader>
+              <Shield className="h-10 w-10 text-primary" />
+              <CardTitle>Evidence-Based</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription>
+                Every claim is backed by peer-reviewed research and credible scientific sources.
+              </CardDescription>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <Zap className="h-10 w-10 text-primary" />
+              <CardTitle>Regularly Updated</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription>
+                Our database is continuously updated with the latest research and findings.
+              </CardDescription>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <BookOpen className="h-10 w-10 text-primary" />
+              <CardTitle>Easy to Understand</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription>
+                Complex scientific concepts explained in clear, accessible language.
+              </CardDescription>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      {/* Featured Myths */}
+      {featuredMyths.length > 0 && (
+        <section className="container space-y-6 py-8 md:py-12 lg:py-24">
+          <div className="flex flex-col items-center space-y-4 text-center">
+            <h2 className="font-bold text-3xl leading-[1.1] sm:text-3xl md:text-6xl">
+              Featured Debunks
+            </h2>
+            <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
+              Some of our most thoroughly researched myth debunks.
+            </p>
+          </div>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {featuredMyths.map((myth) => (
+              <MythCard key={myth.slug} myth={myth} />
+            ))}
+          </div>
+          <div className="text-center">
+            <Button variant="outline" asChild>
+              <Link href="/myths">
+                View All Myths
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+        </section>
+      )}
+
+      {/* Recent Myths */}
+      <section className="container space-y-6 py-8 md:py-12 lg:py-24 bg-muted/50">
+        <div className="flex flex-col items-center space-y-4 text-center">
+          <h2 className="font-bold text-3xl leading-[1.1] sm:text-3xl md:text-6xl">
+            Latest Research
+          </h2>
+          <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
+            Our most recently added myth debunks and investigations.
+          </p>
+        </div>
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {recentMyths.map((myth) => (
+            <MythCard key={myth.slug} myth={myth} />
+          ))}
+        </div>
+      </section>
+
+      {/* Newsletter */}
+      <section className="container py-8 md:py-12 lg:py-24">
+        <div className="mx-auto max-w-[58rem]">
+          <Newsletter />
+        </div>
+      </section>
     </div>
   );
 }
